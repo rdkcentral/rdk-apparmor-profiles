@@ -1,4 +1,5 @@
 profile lighttpd /usr/sbin/lighttpd flags=(attach_disconnected) {
+    #include if exists "/etc/apparmor.d/vendor/usr.sbin.lighttpd"
     signal,
     ptrace,
     /proc/loadavg r,

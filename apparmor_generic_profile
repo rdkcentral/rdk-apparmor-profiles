@@ -1,4 +1,3 @@
 default:enforce
 audiocapturemgr:enforce
-irMgrMain:enforce
 lighttpd:enforce
