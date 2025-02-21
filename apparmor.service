@@ -19,6 +19,7 @@
 
 [Unit]
 Description=AppArmor initialization
+After=opt.mount
 Before=lighttpd.service
 AssertPathIsReadWrite=/sys/kernel/security/apparmor/.load
 ConditionSecurity=apparmor
