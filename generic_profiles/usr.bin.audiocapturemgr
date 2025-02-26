@@ -1,4 +1,5 @@
 profile audiocapturemgr /usr/bin/audiocapturemgr flags=(attach_disconnected) {
+    #include if exists "/etc/apparmor.d/vendor/usr.bin.audiocapturemgr"
     signal,
     ptrace,
     capability dac_override,

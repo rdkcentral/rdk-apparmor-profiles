@@ -29,6 +29,7 @@ profile lighttpd /usr/sbin/lighttpd flags=(attach_disconnected) {
     /opt/logs/access.log w,
     /etc/lighttpd/lighttpd.conf r,
     /etc/lighttpd.d/usb-media-mount.conf r,
+    /etc/lighttpd.d/ref-webui-docroot-path.conf r,
     /etc/lighttpd.d/p_dummy_auth.conf r,
     /etc/lighttpd.d/offline_apps.conf r,
     /etc/lighttpd.d/ r,
