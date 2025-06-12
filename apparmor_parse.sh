@@ -38,6 +38,11 @@ if [ ! -f $Apparmor_blocklist ]; then
     touch $Apparmor_blocklist
 fi
 
+complain_list=()
+enforce_list=()
+unconfined_list=()
+other_list=()
+
 while read line; do
         mode=`echo $line | cut -d ":" -f 2`
         process=`echo $line | cut -d ":" -f 1`
@@ -47,15 +52,38 @@ while read line; do
 	     blocklist_mode=`echo $blocklist_process | awk -F ":" '{print $2}'`
 	     if [ "$mode" == "enforce" ]; then
                      if [ "$blocklist_mode" == "complain" ]; then
-                             $PARSER -rWC $PROFILES_DIR/$profile
+                             complain_list+=("$PROFILES_DIR/$profile")
                      elif [ "$blocklist_mode" != "disable" ]; then
-                             $PARSER -rW $PROFILES_DIR/$profile
+                             enforce_list+=("$PROFILES_DIR/$profile")
+                     elif [ "$blocklist_mode" == "disable" ]; then
+                           if [ "$process" != "global" ]; then
+                           unconfined_list+=("$PROFILES_UNCONFINED_DIR/$profile")
+                           fi
                      fi
              elif [ "$mode" == "complain" ] && [ "$blocklist_mode" != "disable" ]; then
-                     $PARSER -rWC $PROFILES_DIR/$profile
+                 other_list+=("$PROFILES_DIR/$profile")
              fi
         fi
 done<$Apparmor_defaults
+if [[ ${#complain_list[@]} -gt 0 ]]; then
+    joined_string=$(IFS=" "; echo "${complain_list[*]}")
+    apparmor_parser -rWC $joined_string
+fi
+
+if [[ ${#enforce_list[@]} -gt 0 ]]; then
+    joined_string=$(IFS=" "; echo "${enforce_list[*]}")
+    apparmor_parser -rW $joined_string
+fi
+
+if [[ ${#unconfined_list[@]} -gt 0 ]]; then
+    joined_string=$(IFS=" "; echo "${unconfined_list[*]}")
+    apparmor_parser -rWC $joined_string
+fi
+
+if [[ ${#other_list[@]} -gt 0 ]]; then
+    joined_string=$(IFS=" "; echo "${other_list[*]}")
+    apparmor_parser -rWC $joined_string
+fi
 
 if type systemd_apparmor; then
     systemd_apparmor
