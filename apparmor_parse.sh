@@ -55,10 +55,6 @@ while read line; do
                              complain_list+=("$PROFILES_DIR/$profile")
                      elif [ "$blocklist_mode" != "disable" ]; then
                              enforce_list+=("$PROFILES_DIR/$profile")
-                     elif [ "$blocklist_mode" == "disable" ]; then
-                           if [ "$process" != "global" ]; then
-                           unconfined_list+=("$PROFILES_UNCONFINED_DIR/$profile")
-                           fi
                      fi
              elif [ "$mode" == "complain" ] && [ "$blocklist_mode" != "disable" ]; then
                  other_list+=("$PROFILES_DIR/$profile")
