@@ -43,24 +43,67 @@ enforce_list=()
 unconfined_list=()
 other_list=()
 
-while read line; do
-        mode=`echo $line | cut -d ":" -f 2`
-        process=`echo $line | cut -d ":" -f 1`
-        profile=`ls -ltr $PROFILES_DIR | grep -w $process | awk '{print $9}'`
-        if [ ! -z $profile ]; then
-	     blocklist_process=`grep -w $process $Apparmor_blocklist`
-	     blocklist_mode=`echo $blocklist_process | awk -F ":" '{print $2}'`
-	     if [ "$mode" == "enforce" ]; then
-                     if [ "$blocklist_mode" == "complain" ]; then
-                             complain_list+=("$PROFILES_DIR/$profile")
-                     elif [ "$blocklist_mode" != "disable" ]; then
-                             enforce_list+=("$PROFILES_DIR/$profile")
-                     fi
-             elif [ "$mode" == "complain" ] && [ "$blocklist_mode" != "disable" ]; then
-                 other_list+=("$PROFILES_DIR/$profile")
-             fi
-        fi
-done<$Apparmor_defaults
+#                                      
+# Parse the blocklist into block_modes_<process name>
+# We do this due to BusyBox lacking associative
+# arrays.                                              
+while IFS=: read -r process mode; do
+  [[ -z $process || $process == \#* ]] && continue
+  # These are eval'd so we have to be careful with the
+  # contents.         
+  if [[ ! "$mode" =~ disable|complain|enforce ]]; then
+    echo "Invalid blocklist mode for process $process, ignoring"  
+    continue                       
+  fi                            
+  
+  if [[ ! $process =~ ^[[:alnum:]_.-]+$ ]]; then
+    echo "Process blocklist name is invalid, ignoring"
+    continue                    
+  fi
+
+  eval "block_modes_${process//./_}=${mode}"
+done < "$Apparmor_blocklist"            
+                                             
+#                                          
+# Parse the defaults file, load arrays based on the                      
+# values in the defaults file compared to the blocklist
+while IFS=: read -r process mode; do
+  [[ -z $process || -z $mode ]] && continue
+  
+  # TODO: This could use revision
+  profile_file="$PROFILES_DIR/*$process"
+                                  
+  if [[ ! $process =~ ^[[:alnum:]_.-]+$ ]]; then
+    echo "Process defaults name is invalid, ignoring"
+    continue                       
+  fi
+                                     
+  eval "var_name=block_modes_${process//./_}"
+  if [[ ! $var_name =~ ^[[:alnum:]_.-]+$ ]]; then
+    echo "Var name is invalid, ignoring"
+    continue                                     
+  fi                
+        
+  eval "blocklist_mode=\${block_modes_${process//./_}}"
+  if [[ -z $blocklist_mode ]]; then
+     blocklist_mode=$mode                        
+  fi                
+        
+  if [[ $mode == "complain" || $blocklist_mode == "complain" ]]; then
+    complain_list+=("$profile_file") 
+                                                                    
+  elif [[ $mode == "enforce" && $blocklist_mode != "disable" ]]; then 
+    enforce_list+=("$profile_file")
+  
+  elif [[ $blocklist_mode == "disable" && $process != "global" ]]; then
+    unconfined_list+=("$profile_file")        
+                   
+  elif [[ $blocklist_mode != "disable" ]]; then
+    other_list+=("$profile_file")
+  fi                    
+             
+done < "$Apparmor_defaults"
+
 if [[ ${#complain_list[@]} -gt 0 ]]; then
     joined_string=$(IFS=" "; echo "${complain_list[*]}")
     apparmor_parser -rWCB $joined_string
