@@ -25,6 +25,7 @@ PROFILES_DIR="/etc/apparmor/binprofiles/*/"
 PARSER="/sbin/apparmor_parser"
 SYSFS_AA_PATH="/sys/kernel/security/apparmor/profiles"
 RDKLOGS="/opt/logs/startup_stdout_log.txt"
+profile_binary=false
 
 if [ -f /lib/rdk/apparmor_utils.sh ]; then
     source /lib/rdk/apparmor_utils.sh
@@ -106,22 +107,38 @@ done < "$Apparmor_defaults"
 
 if [[ ${#complain_list[@]} -gt 0 ]]; then
     joined_string=$(IFS=" "; echo "${complain_list[*]}")
-    apparmor_parser -rWCB $joined_string
+    if [ "$profile_binary" = true ]; then
+         apparmor_parser -rWCB $joined_string
+    else
+         apparmor_parser -rWC $joined_string
+    fi
 fi
 
 if [[ ${#enforce_list[@]} -gt 0 ]]; then
     joined_string=$(IFS=" "; echo "${enforce_list[*]}")
-    apparmor_parser -rWB $joined_string
+    if [ "$profile_binary" = true ]; then
+         apparmor_parser -rWB $joined_string
+    else
+         apparmor_parser -rW $joined_string
+    fi
 fi
 
 if [[ ${#unconfined_list[@]} -gt 0 ]]; then
     joined_string=$(IFS=" "; echo "${unconfined_list[*]}")
-    apparmor_parser -rWCB $joined_string
+    if [ "$profile_binary" = true ]; then
+        apparmor_parser -rWCB $joined_string
+    else
+        apparmor_parser -rWC $joined_string
+    fi
 fi
 
 if [[ ${#other_list[@]} -gt 0 ]]; then
     joined_string=$(IFS=" "; echo "${other_list[*]}")
-    apparmor_parser -rWCB $joined_string
+    if [ "$profile_binary" = true ]; then
+         apparmor_parser -rWCB $joined_string
+    else
+         apparmor_parser -rWC $joined_string
+    fi
 fi
 
 if type systemd_apparmor; then
