@@ -21,7 +21,7 @@
 
 Apparmor_defaults="/etc/apparmor/apparmor_defaults"
 Apparmor_blocklist="/opt/secure/Apparmor_blocklist"
-PROFILES_DIR="/etc/apparmor/binprofiles/*/"
+PROFILES_DIR="/etc/apparmor.d/"
 PARSER="/sbin/apparmor_parser"
 SYSFS_AA_PATH="/sys/kernel/security/apparmor/profiles"
 RDKLOGS="/opt/logs/startup_stdout_log.txt"
