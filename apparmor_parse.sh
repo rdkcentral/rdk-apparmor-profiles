@@ -105,40 +105,26 @@ while IFS=: read -r process mode; do
              
 done < "$Apparmor_defaults"
 
+bin_option=$($profile_binary && echo "B")
+
 if [[ ${#complain_list[@]} -gt 0 ]]; then
     joined_string=$(IFS=" "; echo "${complain_list[*]}")
-    if [ "$profile_binary" = true ]; then
-         apparmor_parser -rWCB $joined_string
-    else
-         apparmor_parser -rWC $joined_string
-    fi
+    apparmor_parser -rWC$bin_option $joined_string
 fi
 
 if [[ ${#enforce_list[@]} -gt 0 ]]; then
     joined_string=$(IFS=" "; echo "${enforce_list[*]}")
-    if [ "$profile_binary" = true ]; then
-         apparmor_parser -rWB $joined_string
-    else
-         apparmor_parser -rW $joined_string
-    fi
+    apparmor_parser -rW$bin_option $joined_string
 fi
 
 if [[ ${#unconfined_list[@]} -gt 0 ]]; then
     joined_string=$(IFS=" "; echo "${unconfined_list[*]}")
-    if [ "$profile_binary" = true ]; then
-        apparmor_parser -rWCB $joined_string
-    else
-        apparmor_parser -rWC $joined_string
-    fi
+    apparmor_parser -rWC$bin_option $joined_string
 fi
 
 if [[ ${#other_list[@]} -gt 0 ]]; then
     joined_string=$(IFS=" "; echo "${other_list[*]}")
-    if [ "$profile_binary" = true ]; then
-         apparmor_parser -rWCB $joined_string
-    else
-         apparmor_parser -rWC $joined_string
-    fi
+     apparmor_parser -rWC$bin_option $joined_string
 fi
 
 if type systemd_apparmor; then
