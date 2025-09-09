@@ -41,9 +41,6 @@ fi
 
 complain_list=()
 enforce_list=()
-unconfined_list=()
-other_list=()
-
 #                                      
 # Parse the blocklist into block_modes_<process name>
 # We do this due to BusyBox lacking associative
@@ -95,12 +92,6 @@ while IFS=: read -r process mode; do
                                                                     
   elif [[ $mode == "enforce" && $blocklist_mode != "disable" ]]; then 
     enforce_list+=("$profile_file")
-  
-  elif [[ $blocklist_mode == "disable" && $process != "global" ]]; then
-    unconfined_list+=("$profile_file")        
-                   
-  elif [[ $blocklist_mode != "disable" ]]; then
-    other_list+=("$profile_file")
   fi                    
              
 done < "$Apparmor_defaults"
@@ -115,16 +106,6 @@ fi
 if [[ ${#enforce_list[@]} -gt 0 ]]; then
     joined_string=$(IFS=" "; echo "${enforce_list[*]}")
     apparmor_parser -rW$bin_option $joined_string
-fi
-
-if [[ ${#unconfined_list[@]} -gt 0 ]]; then
-    joined_string=$(IFS=" "; echo "${unconfined_list[*]}")
-    apparmor_parser -rWC$bin_option $joined_string
-fi
-
-if [[ ${#other_list[@]} -gt 0 ]]; then
-    joined_string=$(IFS=" "; echo "${other_list[*]}")
-     apparmor_parser -rWC$bin_option $joined_string
 fi
 
 if type systemd_apparmor; then
