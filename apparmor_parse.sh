@@ -82,17 +82,20 @@ while IFS=: read -r process mode; do
   eval "blocklist_mode=\${block_modes_${process//./_}}"
   if [[ -z $blocklist_mode ]]; then
      blocklist_mode=$mode                        
-  fi                
-        
-  if [[ $mode == "complain" || $blocklist_mode == "complain" ]]; then
-    profile_file_complain="/etc/apparmor.d/*$process"
-    complain_list+=("$profile_file_complain") 
-                                                                    
-  elif [[ $mode == "enforce" && $blocklist_mode != "disable" ]]; then
-    profile_file_enforce="$PROFILES_DIR/*$process"
-    enforce_list+=("$profile_file_enforce")
-  fi                    
-             
+  fi
+  
+  if [ "$mode" == "enforce" ]; then
+        if [ "$blocklist_mode" == "complain" ]; then
+              profile_file_complain="/etc/apparmor.d/*$process"
+              complain_list+=("$profile_file_complain")
+        elif [ "$blocklist_mode" != "disable" ]; then
+               profile_file_enforce="$PROFILES_DIR/*$process"
+               enforce_list+=("$profile_file_enforce")
+        fi
+  elif [ "$mode" == "complain" ] && [ "$blocklist_mode" != "disable" ]; then
+           profile_file_complain="/etc/apparmor.d/*$process"
+           complain_list+=("$profile_file_complain")
+  fi                                 
 done < "$Apparmor_defaults"
 
 if [[ ${#complain_list[@]} -gt 0 ]]; then
