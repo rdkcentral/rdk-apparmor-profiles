@@ -67,9 +67,6 @@ done < "$Apparmor_blocklist"
 # values in the defaults file compared to the blocklist
 while IFS=: read -r process mode; do
   [[ -z $process || -z $mode ]] && continue
-  
-  # TODO: This could use revision
-  profile_file="$PROFILES_DIR/*$process"
                                   
   if [[ ! $process =~ ^[[:alnum:]_.-]+$ ]]; then
     echo "Process defaults name is invalid, ignoring"
@@ -88,24 +85,24 @@ while IFS=: read -r process mode; do
   fi                
         
   if [[ $mode == "complain" || $blocklist_mode == "complain" ]]; then
-    complain_list+=("$profile_file") 
+    profile_file_complain="/etc/apparmor.d/*$process"
+    complain_list+=("$profile_file_complain") 
                                                                     
-  elif [[ $mode == "enforce" && $blocklist_mode != "disable" ]]; then 
-    enforce_list+=("$profile_file")
+  elif [[ $mode == "enforce" && $blocklist_mode != "disable" ]]; then
+    profile_file_enforce="$PROFILES_DIR/*$process"
+    enforce_list+=("$profile_file_enforce")
   fi                    
              
 done < "$Apparmor_defaults"
 
-bin_option=$($profile_binary && echo "B")
-
 if [[ ${#complain_list[@]} -gt 0 ]]; then
     joined_string=$(IFS=" "; echo "${complain_list[*]}")
-    apparmor_parser -rWC$bin_option $joined_string
+    apparmor_parser -rWC $joined_string
 fi
 
 if [[ ${#enforce_list[@]} -gt 0 ]]; then
     joined_string=$(IFS=" "; echo "${enforce_list[*]}")
-    apparmor_parser -rW$bin_option $joined_string
+    apparmor_parser -rW$($profile_binary && echo "B") $joined_string
 fi
 
 if type systemd_apparmor; then
