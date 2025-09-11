@@ -25,6 +25,7 @@ PROFILES_DIR="/etc/apparmor.d/"
 PARSER="/sbin/apparmor_parser"
 SYSFS_AA_PATH="/sys/kernel/security/apparmor/profiles"
 RDKLOGS="/opt/logs/startup_stdout_log.txt"
+profile_binary=false
 
 if [ -f /lib/rdk/apparmor_utils.sh ]; then
     source /lib/rdk/apparmor_utils.sh
@@ -40,27 +41,63 @@ fi
 
 complain_list=()
 enforce_list=()
-unconfined_list=()
-other_list=()
+#                                      
+# Parse the blocklist into block_modes_<process name>
+# We do this due to BusyBox lacking associative
+# arrays.                                              
+while IFS=: read -r process mode; do
+  [[ -z $process || $process == \#* ]] && continue
+  # These are eval'd so we have to be careful with the
+  # contents.         
+  if [[ ! "$mode" =~ disable|complain|enforce ]]; then
+    echo "Invalid blocklist mode for process $process, ignoring"  
+    continue                       
+  fi                            
+  
+  if [[ ! $process =~ ^[[:alnum:]_.-]+$ ]]; then
+    echo "Process blocklist name is invalid, ignoring"
+    continue                    
+  fi
 
-while read line; do
-        mode=`echo $line | cut -d ":" -f 2`
-        process=`echo $line | cut -d ":" -f 1`
-        profile=`ls -ltr $PROFILES_DIR | grep -w $process | awk '{print $9}'`
-        if [ ! -z $profile ]; then
-	     blocklist_process=`grep -w $process $Apparmor_blocklist`
-	     blocklist_mode=`echo $blocklist_process | awk -F ":" '{print $2}'`
-	     if [ "$mode" == "enforce" ]; then
-                     if [ "$blocklist_mode" == "complain" ]; then
-                             complain_list+=("$PROFILES_DIR/$profile")
-                     elif [ "$blocklist_mode" != "disable" ]; then
-                             enforce_list+=("$PROFILES_DIR/$profile")
-                     fi
-             elif [ "$mode" == "complain" ] && [ "$blocklist_mode" != "disable" ]; then
-                 other_list+=("$PROFILES_DIR/$profile")
-             fi
+  eval "block_modes_${process//./_}=${mode}"
+done < "$Apparmor_blocklist"            
+                                             
+#                                          
+# Parse the defaults file, load arrays based on the                      
+# values in the defaults file compared to the blocklist
+while IFS=: read -r process mode; do
+  [[ -z $process || -z $mode ]] && continue
+                                  
+  if [[ ! $process =~ ^[[:alnum:]_.-]+$ ]]; then
+    echo "Process defaults name is invalid, ignoring"
+    continue                       
+  fi
+                                     
+  eval "var_name=block_modes_${process//./_}"
+  if [[ ! $var_name =~ ^[[:alnum:]_.-]+$ ]]; then
+    echo "Var name is invalid, ignoring"
+    continue                                     
+  fi                
+        
+  eval "blocklist_mode=\${block_modes_${process//./_}}"
+  if [[ -z $blocklist_mode ]]; then
+     blocklist_mode=$mode                        
+  fi
+  
+  if [ "$mode" == "enforce" ]; then
+        if [ "$blocklist_mode" == "complain" ]; then
+              profile_file_complain="/etc/apparmor.d/*$process"
+              complain_list+=("$profile_file_complain")
+        elif [ "$blocklist_mode" != "disable" ]; then
+               profile_file_enforce="$PROFILES_DIR/*$process"
+               enforce_list+=("$profile_file_enforce")
         fi
-done<$Apparmor_defaults
+  elif [ "$mode" == "complain" ] && [ "$blocklist_mode" != "disable" ]; then
+           profile_file_complain="/etc/apparmor.d/*$process"
+           complain_list+=("$profile_file_complain")
+  fi                                 
+done < "$Apparmor_defaults"
+
 if [[ ${#complain_list[@]} -gt 0 ]]; then
     joined_string=$(IFS=" "; echo "${complain_list[*]}")
     apparmor_parser -rWC $joined_string
@@ -68,17 +105,7 @@ fi
 
 if [[ ${#enforce_list[@]} -gt 0 ]]; then
     joined_string=$(IFS=" "; echo "${enforce_list[*]}")
-    apparmor_parser -rW $joined_string
-fi
-
-if [[ ${#unconfined_list[@]} -gt 0 ]]; then
-    joined_string=$(IFS=" "; echo "${unconfined_list[*]}")
-    apparmor_parser -rWC $joined_string
-fi
-
-if [[ ${#other_list[@]} -gt 0 ]]; then
-    joined_string=$(IFS=" "; echo "${other_list[*]}")
-    apparmor_parser -rWC $joined_string
+    apparmor_parser -rW$($profile_binary && echo "B") $joined_string
 fi
 
 if type systemd_apparmor; then
