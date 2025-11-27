@@ -45,6 +45,7 @@ profile lighttpd /usr/sbin/lighttpd flags=(attach_disconnected) {
     /home/root/lxresui/static/moreChannels/ChannelData.json r,
     /usb/* r,
     /usb/** r,
+    /opt/www/** r,
     /home/root/lxresui/* r,
     /home/root/lxresui/** r,
     /usr/sbin/lighttpd mrix,
