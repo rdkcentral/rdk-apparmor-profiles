@@ -1,0 +1,6 @@
+profile syslog-ng /usr/sbin/syslog-ng flags=(attach_disconnected) {
+    ptrace,
+    signal,
+    /dev/pts/* rw,
+    /dev/urandom r,
+}
