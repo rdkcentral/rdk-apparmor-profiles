@@ -19,7 +19,6 @@
 
 [Unit]
 Description=AppArmor initialization
-Before=lighttpd.service
 AssertPathIsReadWrite=/sys/kernel/security/apparmor/.load
 ConditionSecurity=apparmor
 DefaultDependencies=no
