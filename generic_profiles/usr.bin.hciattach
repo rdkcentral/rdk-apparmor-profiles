@@ -1,0 +1,7 @@
+profile hciattach /usr/bin/hciattach flags=(attach_disconnected) {
+    /lib/libc*.so* mr,
+    /lib/ld-linux-armhf*.so.* mr,
+    /lib/ld-*.so* mr,
+   /dev/ttyS* rw,
+   /dev/ttyS* rw,
+}
