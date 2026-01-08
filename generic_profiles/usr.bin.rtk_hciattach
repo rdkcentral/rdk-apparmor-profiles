@@ -1,0 +1,4 @@
+profile rtk_hciattach /usr/bin/rtk_hciattach flags=(attach_disconnected) {
+    /lib/libc*.so* mr,
+    /lib/ld-linux-armhf*.so.* mr,
+}
