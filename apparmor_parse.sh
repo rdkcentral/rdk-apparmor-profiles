@@ -20,6 +20,7 @@
 ##########################################################################
 
 echo "this is a test line to check for autorev"
+echo "this is 2nd test line to chekc for autorev"
 Apparmor_defaults="/etc/apparmor/apparmor_defaults"
 Apparmor_blocklist="/opt/secure/Apparmor_blocklist"
 PROFILES_DIR="/etc/apparmor.d/"
