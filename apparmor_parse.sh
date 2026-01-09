@@ -19,6 +19,7 @@
 # limitations under the License.
 ##########################################################################
 
+echo "this is a test line to check for autorev"
 Apparmor_defaults="/etc/apparmor/apparmor_defaults"
 Apparmor_blocklist="/opt/secure/Apparmor_blocklist"
 PROFILES_DIR="/etc/apparmor.d/"
