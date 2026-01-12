@@ -1,6 +1,5 @@
 profile btMgrBus /usr/bin/btMgrBus flags=(attach_disconnected) {
     /bin/bash.bash mrix,
-    /dev/urandom r,
     /dev/urandom rw,
     /etc/debug.ini r,
     /etc/ld.so.conf r,

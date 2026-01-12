@@ -1,6 +1,5 @@
 profile ledmgr /usr/bin/ledmgr flags=(attach_disconnected) {
     /bin/bash.bash mrix,
-    /dev/urandom r,
     /dev/urandom rw,
     /etc/nsswitch.conf r,
     /etc/security/caps/process-capabilities.json r,

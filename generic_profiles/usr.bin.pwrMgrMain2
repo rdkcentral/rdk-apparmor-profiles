@@ -1,5 +1,4 @@
 profile pwrMgrMain2 /usr/bin/pwrMgrMain2 flags=(attach_disconnected) {
-    /bin/bash.bash mr,
     /bin/bash.bash mrix,
     /bin/busybox.nosuid mrix,
     /bin/journalctl mrix,
@@ -33,7 +32,7 @@ profile pwrMgrMain2 /usr/bin/pwrMgrMain2 flags=(attach_disconnected) {
     /lib/librt*.so* mrix,
     /lib/libsystemd*.so* mr,
     /lib/libtinfo*.so* mr,
-    /lib/libudev.so* mwrix,
+    /lib/libudev.so* mr,
     /lib/libz*.so* mrix,
     /proc/*/mounts r,
     /proc/*/status r,

@@ -29,7 +29,6 @@ profile xcal-device /usr/bin/xcal-device flags=(attach_disconnected) {
     /proc/cpuinfo r,
     /sys/devices/system/cpu/online r,
     /usr/lib/gio/modules/** mr,
-    /usr/lib/gio/modules/** r,
     /usr/lib/gio/modules/libgioopenssl*.so* mr,
     /usr/lib/libIARMBus*.so* mr,
     /usr/lib/libbreakpadwrapper*.so* mr,

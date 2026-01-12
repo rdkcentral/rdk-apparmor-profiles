@@ -26,7 +26,6 @@ profile WPEFramework /usr/bin/WPEFramework flags=(attach_disconnected) {
     /usr/bin/openssl mrix,
     /usr/bin/tr181 mrix,
     /usr/lib/libzstd*.so* mr,
-    /usr/libexec/** rwmix,
     /usr/sbin/xtables-legacy-multi mrix,
     /usr/share/udhcpc/default.script mrix,
 }

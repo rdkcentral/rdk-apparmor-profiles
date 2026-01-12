@@ -47,7 +47,6 @@ profile tr69hostif /usr/bin/tr69hostif flags=(attach_disconnected, mediate_delet
     /etc/rdm/rdm-manifest.json mr,
     /etc/rfc.properties r,
     /etc/ssl/openssl.cnf mr,
-    /etc/ssl/openssl.cnf r,
     /etc/webpa_cfg.json r,
     /lib/ld*.so* mr,
     /lib/ld-linux-armhf*.so* mr,

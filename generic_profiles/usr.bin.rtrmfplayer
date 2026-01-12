@@ -39,7 +39,6 @@ profile rtrmfplayer /usr/bin/rtrmfplayer flags=(attach_disconnected) {
     /proc/uptime r,
     /sys/devices/system/cpu/online r,
     /usr/lib/gio/modules/** mr,
-    /usr/lib/gio/modules/** r,
     /usr/lib/gio/modules/libgioopenssl*.so* mr,
     /usr/lib/gstreamer-1.0/libgstaamp*.so* mr,
     /usr/lib/gstreamer-1.0/libgsthttpsrc*.so* mr,
