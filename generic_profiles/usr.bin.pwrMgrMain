@@ -4,7 +4,6 @@ profile pwrMgrMain /usr/bin/pwrMgrMain flags=(attach_disconnected) {
     /bin/journalctl mrix,
     /bin/mount.util-linux mrix,
     /bin/pidof.procps mrix,
-    /bin/ps* mrix,
     /bin/systemctl mrix,
     /bin/umount.util-linux mrix,
     /dev/null rw,

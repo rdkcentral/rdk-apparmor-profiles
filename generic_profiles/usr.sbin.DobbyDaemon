@@ -30,7 +30,6 @@ profile DobbyDaemon /usr/sbin/DobbyDaemon flags=(attach_disconnected) {
     /sys/devices/system/cpu/possible r,
     /sys/devices/system/cpu/present r,
     /usr/bin/DobbyPluginLauncher mrix,
-    /usr/bin/crun mrUx,
     /usr/lib/libbreakpadwrapper*.so* mr,
     /usr/lib/libctemplate*.so* mr,
     /usr/lib/libdbus*.so* mr,

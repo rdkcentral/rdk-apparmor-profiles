@@ -14,7 +14,6 @@ profile nfrtool /usr/bin/nfrtool flags=(complain, attach_disconnected) {
     /lib/librt.so.* rm,
     /usr/lib/libcjson.so.* rm,
     /usr/lib/liblog4c.so.* rm,
-    /usr/lib/libnss_mdns-*.so r,
     /usr/lib/libnss_mdns-*.so rm,
     /usr/lib/libnss_myhostname.so.* rm,
     /usr/lib/libpcap.so.* rm,

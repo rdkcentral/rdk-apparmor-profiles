@@ -14,7 +14,7 @@ profile deepSleepMgrMain /usr/bin/deepSleepMgrMain flags=(attach_disconnected) {
     /etc/device.properties r,
     /etc/env_setup.sh r,
     /etc/host.conf r,
-    /etc/hosts rw,
+    /etc/hosts r,
     /etc/include.properties r,
     /etc/nsswitch.conf r,
     /etc/rfc.properties r,

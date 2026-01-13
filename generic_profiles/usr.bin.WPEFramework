@@ -10,7 +10,7 @@ profile WPEFramework /usr/bin/WPEFramework flags=(attach_disconnected) {
     /dev/null rw,
     /dev/urandom r,
     /etc/device.properties r,
-    /etc/ssl/openssl.cnf rw,
+    /etc/ssl/openssl.cnf r,
     /lib/rdk/getDeviceDetails.sh mrix,
     /proc/*/mounts r,
     /proc/*/status r,
