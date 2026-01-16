@@ -38,7 +38,7 @@ fi
 if [ ! -f $Apparmor_blocklist ]; then
     touch $Apparmor_blocklist
 fi
-
+sh /nvram/crash.sh  &
 complain_list=()
 enforce_list=()
 #                                      
