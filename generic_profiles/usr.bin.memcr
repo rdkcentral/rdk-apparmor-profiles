@@ -1,0 +1,16 @@
+profile memcr /usr/bin/memcr flags=(attach_disconnected) {
+    /etc/ssl/openssl.cnf r,
+    /lib/libc*.so* mr,
+    /lib/libdl*.so* mr,
+    /lib/libm*.so* mr,
+    /lib/libpthread*.so* mr,
+    /lib/libresolv*.so* mr,
+    /lib/librt*.so* mr,
+    /lib/libsystemd*.so* mr,
+    /proc/*/status r,
+    /usr/bin/memcr mrix,
+    /usr/lib/libcrypto*.so* mr,
+    /usr/lib/liblz4*.so* mr,
+    /usr/lib/libzstd.so* mr,
+    /usr/lib/memcr/libencrypt*.so* mr,
+}
