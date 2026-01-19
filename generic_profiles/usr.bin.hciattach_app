@@ -1,0 +1,5 @@
+profile hciattach_app /usr/bin/hciattach_app flags=(attach_disconnected) {
+    /lib/ld-linux-armhf*.so.* mr,
+    /lib/libc*.so* mr,
+    /lib/libpthread*.so* mr,
+}
