@@ -16,6 +16,7 @@ profile audiocapturemgr /usr/bin/audiocapturemgr flags=(attach_disconnected) {
     /etc/env_setup.sh r,
     /etc/include.properties r,
     /etc/rfc.properties r,
+    /etc/log4crc r,
     /lib/libz*.so* rm,
     /lib/libtinfo*.so* rm,
     /lib/libsystemd*.so* rm,
