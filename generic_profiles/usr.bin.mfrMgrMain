@@ -3,6 +3,7 @@ profile mfrMgrMain /usr/bin/mfrMgrMain flags=(attach_disconnected) {
     /dev/zero r,
     /etc/device.properties r,
     /etc/ld.so.conf r,
+    /etc/log4crc r,
     /etc/ssl/openssl.cnf r,
     /lib/ld*.so* mr,
     /lib/libc*.so* mr,

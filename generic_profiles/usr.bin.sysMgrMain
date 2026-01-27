@@ -1,6 +1,7 @@
 profile sysMgrMain /usr/bin/sysMgrMain flags=(attach_disconnected) {
     /dev/urandom r,
     /etc/ld.so.conf r,
+    /etc/log4crc r,
     /lib/ld*.so* mr,
     /lib/libc*.so* mr,
     /lib/libcap*.so* mr,
