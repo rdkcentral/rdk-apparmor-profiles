@@ -82,5 +82,8 @@ profile dsMgrMain /usr/bin/dsMgrMain flags=(attach_disconnected) {
     /usr/lib/libwayland-server*.so* mr,
     /usr/lib/libwdmp-c*.so* mr,
     /usr/lib/libzstd.so* mr,
+    /usr/bin/rebootnow mrix,
+    /usr/lib/librebootnow*.so* mr,
+    /usr/lib/libtelemetry_msgsender*.so* mr,
     /usr/share/zoneinfo/Universal r,
 }
