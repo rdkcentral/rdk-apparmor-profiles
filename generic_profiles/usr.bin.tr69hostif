@@ -146,7 +146,6 @@ profile tr69hostif /usr/bin/tr69hostif flags=(attach_disconnected, mediate_delet
     /usr/bin/vmstat mrix,
     /usr/bin/rebootnow mrix,
     /usr/lib/librebootnow*.so* mr,
-    /usr/lib/libtelemetry_msgsender*.so* mr,
     /usr/lib/libBTMgr*.so* mr,
     /usr/lib/libIARMBus*.so* mr,
     /usr/lib/libRdkCertSelector*.so* mr,
