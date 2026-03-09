@@ -13,11 +13,10 @@ profile default /** flags=(attach_disconnected){
   /{,**} pix,
   change_profile -> **,
   # Deny some sensitive files of /sys
-  deny /sys/f[^s]*/** wklx,
+  deny /sys/f[^is*]/** wklx,
   deny /sys/fs/[^c]*/** wklx,
   deny /sys/fs/c[^g]*/** wklx,
   deny /sys/fs/cg[^r]*/** wklx,
-  deny /sys/firmware/** wklx,
   # Deny some sensitive files from /proc fs.
   deny /proc/* w,   # deny write for all files directly in /proc (not in a subdir)
   # deny write to files not in /proc/<number>/** or /proc/sys/**
