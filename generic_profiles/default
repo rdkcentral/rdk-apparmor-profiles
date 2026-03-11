@@ -24,4 +24,6 @@ profile default /** flags=(attach_disconnected){
   #deny everything except shm* and core* in /proc/sys/kernel/
   deny /proc/sysrq-trigger rwklx,
   deny /proc/kcore rwklx,
+  deny /sys/firmware/{b[^r]**,br[^c]**,brc[^m]**,brcm[^s]**,brcms[^t]**,brcmst[^b]**,[^b]**} wklx,
+  deny /sys/firmware/brcmstb/{s[^u]**,su[^s]**,sus[^p]**,susp[^e]**,suspe[^n]**,suspen[^d]**,suspend_mode?**,[^s]**} wklx,
 }
