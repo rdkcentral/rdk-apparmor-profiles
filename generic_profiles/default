@@ -17,6 +17,8 @@ profile default /** flags=(attach_disconnected){
   deny /sys/fs/[^c]*/** wklx,
   deny /sys/fs/c[^g]*/** wklx,
   deny /sys/fs/cg[^r]*/** wklx,
+  deny /sys/firmware/{b[^r]**,br[^c]**,brc[^m]**,brcm[^s]**,brcms[^t]**,brcmst[^b]**,[^b]**} wl,
+  deny /sys/firmware/brcmstb/{s[^u]**,su[^s]**,sus[^p]**,susp[^e]**,suspe[^n]**,suspen[^d]**,suspend[^_]**,suspend_[^m]**,suspend_m[^o]**,suspend_mo[^d]**,suspend_mod[^e]**,suspend_mode?**,[^s]**} wl,
   # Deny some sensitive files from /proc fs.
   deny /proc/* w,   # deny write for all files directly in /proc (not in a subdir)
   # deny write to files not in /proc/<number>/** or /proc/sys/**
@@ -25,6 +27,4 @@ profile default /** flags=(attach_disconnected){
   deny /proc/sys/kernel/{?,??,s[^yh]**,s[yh][^ms]**,sys[^r]**,sysr[^q]**,p[^a]**,pa[^n]**,pan[^i]**,pani[^c]**,c[^o]**,co[^r]**,cor[^e]**,[^spc]**} w,
   deny /proc/sysrq-trigger rwklx,
   deny /proc/kcore rwklx,
-  deny /sys/firmware/{b[^r]**,br[^c]**,brc[^m]**,brcm[^s]**,brcms[^t]**,brcmst[^b]**,[^b]**} wkl,
-  deny /sys/firmware/brcmstb/{s[^u]**,su[^s]**,sus[^p]**,susp[^e]**,suspe[^n]**,suspen[^d]**,suspend[^_]**,suspend_[^m]**,suspend_m[^o]**,suspend_mo[^d]**,suspend_mod[^e]**,suspend_mode?**,[^s]**} wkl,
 }
