@@ -18,7 +18,6 @@ profile default /** flags=(attach_disconnected){
   deny /sys/fs/c[^g]*/** wklx,
   deny /sys/fs/cg[^r]*/** wklx,
   deny /sys/firmware/** wklx,
-  deny /sys/firmware/brcmstb/{s[^u]**,su[^s]**,sus[^p]**,susp[^e]**,suspe[^n]**,suspen[^d]**,suspend[^_]**,suspend_[^m]**,suspend_m[^o]**,suspend_mo[^d]**,suspend_mod[^e]**,suspend_mode?**,[^s]**} w,
   # Deny some sensitive files from /proc fs.
   deny /proc/* w,   # deny write for all files directly in /proc (not in a subdir)
   # deny write to files not in /proc/<number>/** or /proc/sys/**
