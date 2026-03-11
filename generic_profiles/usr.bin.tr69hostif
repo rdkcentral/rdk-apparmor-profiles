@@ -185,6 +185,8 @@ profile tr69hostif /usr/bin/tr69hostif flags=(attach_disconnected, mediate_delet
     /usr/lib/libnanomsg*.so* mr,
     /usr/lib/libnghttp*.so* mr,
     /usr/lib/libnghttp2*.so* mr,
+    /usr/lib/libnl-3.so* mr,
+    /usr/lib/libnl-genl-3.so* mr,
     /usr/lib/libnopoll*.so* mr,
     /usr/lib/libnss_mdns*.so* mr,
     /usr/lib/libnss_myhostname*.so* mr,
@@ -247,6 +249,8 @@ profile tr69hostif /usr/bin/tr69hostif flags=(attach_disconnected, mediate_delet
     /usr/lib/xtables/libxt_standard*.so* mr,
     /usr/lib/xtables/libxt_tcp*.so* mr,
     /usr/sbin/NetworkManager mrix,
+    /usr/sbin/iw mrix,
+    /usr/sbin/wpa_cli mrix,
     /usr/sbin/dropbearmulti mrix,
     /usr/sbin/xtables-legacy-multi mrix,
 }
