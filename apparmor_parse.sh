@@ -21,11 +21,11 @@
 
 Apparmor_defaults="/etc/apparmor/apparmor_defaults"
 Apparmor_blocklist="/opt/secure/Apparmor_blocklist"
-PROFILES_DIR="/etc/apparmor.d/"
+PROFILES_DIR="/etc/apparmor/binprofiles/*/"
 PARSER="/sbin/apparmor_parser"
 SYSFS_AA_PATH="/sys/kernel/security/apparmor/profiles"
 RDKLOGS="/opt/logs/startup_stdout_log.txt"
-profile_binary=false
+profile_binary=true
 
 if [ -f /lib/rdk/apparmor_utils.sh ]; then
     source /lib/rdk/apparmor_utils.sh
