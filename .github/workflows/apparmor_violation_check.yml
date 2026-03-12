@@ -1,0 +1,89 @@
+name: apparmor violation check
+
+on:
+  pull_request:
+    paths-ignore:
+      - '**/*.sh'
+      - '**/*.md'
+      - '**/*.conf'
+
+jobs:
+  apparmor-scan:
+    name: AppArmor CICD script
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Run AppArmor CICD script
+        run: |
+          set -euo pipefail
+
+          # Base/head commits (workflow is PR-only, use PR SHAs)
+          base=${{ github.event.pull_request.base.sha }} # base branch 
+          head=${{ github.event.pull_request.head.sha }} # new branch 
+
+          git fetch origin "$base" "$head" --no-tags --no-recurse-submodules
+          changed_files=$(git diff --name-only "$base" "$head")
+
+          EXIT_CODE=0 # track if we find any violations
+
+          # Helper: files we ignore entirely
+          is_ignored_file() { case "$1" in *.sh|*.py|*.yml|*.yaml|*.md|README|README.md|*.conf|*.json|*.ini|*.cfg|.github/*) return 0 ;; *) return 1 ;; esac; }
+
+          # Process each changed file
+          for file in $changed_files; do
+            is_ignored_file "$file" && continue
+
+            new_version=$(mktemp)
+            old_version=$(mktemp)
+
+            # Get new file version; skip if doesn't exist
+            git show "$head:$file" > "$new_version" 2>/dev/null || { rm -f "$new_version" "$old_version"; continue; }
+
+            # Get old file version; use empty if new file
+            git show "$base:$file" > "$old_version" 2>/dev/null || : > "$old_version"
+
+            # Only analyze files that appear to contain AppArmor profiles
+            grep -q -E '^\s*profile\s+' "$new_version" 2>/dev/null || { rm -f "$new_version" "$old_version"; continue; }
+
+            # Run the Python checker and capture its exit code + output.
+            set +e
+            TMP_OUT=$(mktemp)
+            python3 ./apparmor_cicd.py -f "$new_version" -a "$old_version" -N "$file" > "$TMP_OUT" 2>&1
+            PY_EXIT=$?
+            set -e
+
+            OUTPUT=$(cat "$TMP_OUT" || true)
+            rm -f "$TMP_OUT"
+
+            # Clean temp paths and remove duplicate violation reports
+            clean_output=$(echo "$OUTPUT" | sed -E 's#/tmp/tmp\.[[:alnum:]]+#/tmp/TEMP#g' | awk 'BEGIN{RS=""; ORS="\n\n"} !seen[$0]++')
+
+            if [ -n "$clean_output" ]; then
+              echo "$clean_output"
+              # Prefer python exit code first (non-zero indicates new violations)
+              if [ ${PY_EXIT:-0} -ne 0 ]; then
+                EXIT_CODE=1
+              else
+                # Fallback: consider it a failure if the output reports violations
+                if printf "%s\n" "$clean_output" | grep -qE "Total violations found in file: [1-9][0-9]*"; then
+                  EXIT_CODE=1
+                fi
+              fi
+            fi
+
+            rm -f "$new_version" "$old_version"
+          done
+
+          if [ ${EXIT_CODE:-0} -ne 0 ]; then
+            echo "=========================================="
+            echo "❌ AppArmor violations detected!"
+            echo "=========================================="
+            exit 1
+          fi
