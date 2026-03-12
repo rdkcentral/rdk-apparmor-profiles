@@ -21,11 +21,10 @@
 
 Apparmor_defaults="/etc/apparmor/apparmor_defaults"
 Apparmor_blocklist="/opt/secure/Apparmor_blocklist"
-PROFILES_DIR="/etc/apparmor.d/"
+PROFILES_DIR="/etc/apparmor/binprofiles/*/"
 PARSER="/sbin/apparmor_parser"
 SYSFS_AA_PATH="/sys/kernel/security/apparmor/profiles"
 RDKLOGS="/opt/logs/startup_stdout_log.txt"
-profile_binary=false
 
 if [ -f /lib/rdk/apparmor_utils.sh ]; then
     source /lib/rdk/apparmor_utils.sh
@@ -105,7 +104,7 @@ fi
 
 if [[ ${#enforce_list[@]} -gt 0 ]]; then
     joined_string=$(IFS=" "; echo "${enforce_list[*]}")
-    apparmor_parser -rW$($profile_binary && echo "B") $joined_string
+    apparmor_parser -rWB $joined_string
 fi
 
 if type systemd_apparmor; then
