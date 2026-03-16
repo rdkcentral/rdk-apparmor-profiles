@@ -6,8 +6,6 @@ profile audiocapturemgr /usr/bin/audiocapturemgr flags=(attach_disconnected) {
     capability setuid,
     capability setgid,
     network,
-    dbus,
-    unix,
     /tmp/.tr69hostif_http_server_ready r,
     /tmp/rfcdefaults.ini r,
     /bin/bash.bash mrix,
