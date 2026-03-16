@@ -3,8 +3,6 @@ profile lighttpd /usr/sbin/lighttpd flags=(attach_disconnected) {
     signal,
     ptrace,
     network,
-    dbus,
-    unix,
     /proc/loadavg r,
     /lib/ld*.so* rm,
     /lib/libsystemd*.so* rm,
