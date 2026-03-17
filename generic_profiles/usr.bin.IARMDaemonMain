@@ -23,4 +23,5 @@ profile IARMDaemonMain /usr/bin/IARMDaemonMain flags=(attach_disconnected) {
     /usr/lib/libstdc++*.so* mr,
     /usr/lib/libzstd.so* mr,
     /usr/share/zoneinfo/Universal r,
+    /tmp/pqp/** rw
 }
