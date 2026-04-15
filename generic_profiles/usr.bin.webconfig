@@ -1,6 +1,7 @@
 profile webconfig /usr/bin/webconfig flags=(attach_disconnected) {
     /bin/bash.bash mrix,
     /bin/busybox.nosuid mrix,
+    /bin/pidof.procps mrix,
     /dev/null rw,
     /dev/urandom r,
     /etc/debug.ini r,
