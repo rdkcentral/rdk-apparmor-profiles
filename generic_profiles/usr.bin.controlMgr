@@ -1,6 +1,7 @@
 profile controlMgr /usr/bin/controlMgr flags=(attach_disconnected) {
     /bin/bash.bash mrix,
     /bin/busybox.nosuid mrix,
+    /bin/pidof.procps mrix,
     /bin/sh mrix,
     /bin/systemctl mrix,
     /dev/null rw,
