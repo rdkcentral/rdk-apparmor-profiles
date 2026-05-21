@@ -68,4 +68,5 @@ profile sysTimeMgr /usr/bin/sysTimeMgr flags=(attach_disconnected) {
     /usr/lib/libsysTimeMgr*.so* mr,
     /usr/lib/libsystimerfactory*.so* mr,
     /usr/lib/libzstd.so* mr,
+    /usr/lib/libchronyctl.so* mr,
 }
