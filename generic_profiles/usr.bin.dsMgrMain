@@ -37,6 +37,7 @@ profile dsMgrMain /usr/bin/dsMgrMain flags=(attach_disconnected) {
     /usr/bin/redis-cli mrix,
     /usr/bin/tr181 mrix,
     /usr/bin/rebootnow mrix,
+    /usr/bin/hdcp_* r,
     /usr/lib/librebootnow*.so* mr,
     /usr/lib/libtelemetry_msgsender*.so* mr,
     /usr/lib/libIARMBus*.so* mr,
