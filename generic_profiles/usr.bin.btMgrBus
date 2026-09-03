@@ -129,4 +129,7 @@ profile btMgrBus /usr/bin/btMgrBus flags=(attach_disconnected) {
     /usr/lib/libxml*.so* mr,
     /usr/lib/libyajl*.so* mr,
     /usr/lib/libzstd.so* mr,
+    /opt/.gstreamer/registry.bin r,
+    /dev/zero r,
+    /usr/lib/libessosrdkadapter.so* r,
 }
