@@ -20,6 +20,7 @@ profile sysMgrMain /usr/bin/sysMgrMain flags=(attach_disconnected) {
     /sys/devices/system/cpu/online r,
     /sys/devices/system/cpu/possible r,
     /sys/devices/system/cpu/present r,
+    /opt/secure/minidumps/* rwc,
     /usr/bin/sysMgrMain mrix,
     /usr/bin/tr181 mrix,
     /usr/lib/libIARMBus*.so* mr,
