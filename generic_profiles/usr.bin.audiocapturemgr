@@ -95,6 +95,6 @@ profile audiocapturemgr /usr/bin/audiocapturemgr flags=(attach_disconnected) {
     /proc/*/maps r,
     /proc/cpuinfo r,
     /proc/stat r,
-    /opt/secure/minidumps/** rw,
+    /opt/secure/minidumps/* rw,
     /usr/bin/audiocapturemgr mrix,
 }
