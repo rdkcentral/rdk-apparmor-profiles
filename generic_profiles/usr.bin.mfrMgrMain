@@ -23,7 +23,7 @@ profile mfrMgrMain /usr/bin/mfrMgrMain flags=(attach_disconnected) {
     /sys/class/thermal/thermal_zone*/temp r,
     /sys/devices/system/cpu/possible r,
     /sys/devices/system/cpu/present r,
-    /opt/secure/minidumps/** rwc,
+    /opt/secure/minidumps/* rw,
     /usr/bin/mfrMgrMain mrix,
     /usr/bin/tr181 mrix,
     /usr/lib/libIARMBus*.so* mr,
