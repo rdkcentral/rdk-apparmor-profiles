@@ -28,6 +28,7 @@ profile btMgrBus /usr/bin/btMgrBus flags=(attach_disconnected) {
     /proc/cpuinfo r,
     /proc/stat r,
     /sys/devices/system/cpu/online r,
+    /opt/secure/minidumps/* rw,
     /usr/bin/btMgrBus mrix,
     /usr/bin/btrMgrHidEvtMonitor mrix,
     /usr/bin/rdklogctrl mrix,
