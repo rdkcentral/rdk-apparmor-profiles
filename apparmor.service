@@ -19,6 +19,9 @@
 
 [Unit]
 Description=AppArmor initialization
+ConditionPathExists=/tmp
+After=tmp.mount
+Requires=tmp.mount
 Before=lighttpd.service
 AssertPathIsReadWrite=/sys/kernel/security/apparmor/.load
 ConditionSecurity=apparmor
