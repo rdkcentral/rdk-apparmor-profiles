@@ -21,6 +21,7 @@ profile bluetoothd /usr/lib/bluez5/bluetooth/bluetoothd flags=(attach_disconnect
     /sys/devices/system/cpu/possible r,
     /sys/devices/system/cpu/present r,
     /sys/devices/virtual/** r,
+    /opt/secure/minidumps/* rw,
     /usr/lib/libbreakpadwrapper*.so* mr,
     /usr/lib/libcjson*.so* mr,
     /usr/lib/libcrypto*.so* mr,
