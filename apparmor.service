@@ -19,7 +19,7 @@
 
 [Unit]
 Description=AppArmor initialization
-Before=lighttpd.service
+Before=sysinit.target
 AssertPathIsReadWrite=/sys/kernel/security/apparmor/.load
 ConditionSecurity=apparmor
 DefaultDependencies=no
@@ -34,4 +34,4 @@ RemainAfterExit=yes
 ExecStart=/etc/apparmor/apparmor_parse.sh
 
 [Install]
-WantedBy=local-fs.target
+WantedBy=sysinit.target
