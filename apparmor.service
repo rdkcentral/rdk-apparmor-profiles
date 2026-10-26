@@ -20,7 +20,7 @@
 [Unit]
 Description=AppArmor initialization
 DefaultDependencies=no
-
+Before=local-fs.target
 Before=sysinit.target
 ConditionSecurity=apparmor
 ConditionPathExists=/etc/apparmor.d
@@ -35,4 +35,4 @@ RemainAfterExit=yes
 ExecStart=/etc/apparmor/apparmor_parse.sh
 
 [Install]
-WantedBy=sysinit.target
+WantedBy=local-fs.target
